@@ -31,3 +31,10 @@ hr{
     width: 191px;
     margin-left: initial;
 }
+
+.add{
+    background-color: #008CBA;
+    border-color: #0267AE;
+    color: white;
+    margin-left: 2px;
+}
