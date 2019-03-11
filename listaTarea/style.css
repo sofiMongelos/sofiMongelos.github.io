@@ -1,0 +1,33 @@
+
+body { 
+    padding-left: 36em;
+    font-family: sans-serif;
+    background-color: #D6EAF8;
+    color: #444; 
+}
+
+.container{
+
+}
+
+h1 { 
+    font-size: 1.7em
+}
+
+h2 { 
+    font-size: 1.2em
+}
+
+h1, h2 {
+    color: #2874A6
+}
+
+ul{
+    list-style-type: none;
+    margin: 0;
+}
+
+hr{
+    width: 191px;
+    margin-left: initial;
+}
