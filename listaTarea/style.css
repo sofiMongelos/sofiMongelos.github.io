@@ -39,4 +39,7 @@ hr{
     border-color: #0267AE;
     color: white;
     margin-left: 2px;
+    cursor: pointer;
+    border-radius: 84px;
+    padding: 1px 8px 1px 6px;
 }
