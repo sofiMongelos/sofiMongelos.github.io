@@ -7,7 +7,9 @@ body {
 }
 
 .container{
-
+    margin-top: 46px;   
+    width: 350px;
+    height: 450px;
 }
 
 h1 { 
