@@ -43,3 +43,30 @@ hr{
     border-radius: 84px;
     padding: 1px 8px 1px 6px;
 }
+
+.edit{
+    background-color: #04ACF8;
+    border-color: #0267AE;
+    color: white;
+    margin-left: 2px;
+    border-radius: 84px;
+    padding: 1px 8px 1px 6px;
+    cursor: pointer;
+}
+
+.delete{
+    background-color: #F7050C;
+    border-color: #F95358;
+    color: white;
+    margin-left: 2px;
+    border-radius: 84px;
+    padding: 1px 8px 1px 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: white;
+    color: black;
+    border: none;
+  }
+
