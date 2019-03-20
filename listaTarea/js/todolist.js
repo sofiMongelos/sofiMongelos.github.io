@@ -113,24 +113,25 @@
      * @return {boolean}
      */
     const addTask = (e) => {
+        //se activa con el evento click  el cual esta escuchando loque pasa con el input de class add
+        //variable referencia addButtons
         let newTaskInput = document.getElementById("new-task");
+
+        //content obtiene el valor del input si esta vacio trae una cadena vacia ""
         let content = newTaskInput.value;
+
+        //si la longitud es 0 devuelve false y no hace nada
         if (content.length === 0) return false;
 
         e.preventDefault();
 
+        //se crea un objeto que contiente {id: null, status: PENDIENTE, descripcion: content}
         let task = new Task(content);
 
-        // TODO ITEM 1: Llamar al API con el método POST para crear una nueva tarea.
-        //  - Como parámetro `callbackSuccess` envía una función que llame al método `addTaskToList` enviando la
-        //    variable `task` y limpia el valor del input#new-task.
-        //  - Como parámetro `callbackError` envía una función que llame al método `showError` enviando un mensaje de
-        //    error
-        //  - La llamada debe ser asíncrona.
-        //  - No te olvides de envíar el parámetro `task` para que se cree la tarea.
-
-
-        return false;
+        //realizo la peticion POST para crear una nueva tarea
+        Ajax.sendPostRequest(API_URL, task, MediaFormat.JSON, (valor) => processInfo(), (error) => showError(error, 'Error al intentar agregar la tarea'), true)
+        
+        // TODO ITEM 1: Llamar al API con el m�todo POST para crear una nueva tarea.        
     };
 
     /**
