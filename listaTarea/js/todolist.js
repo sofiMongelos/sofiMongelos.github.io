@@ -235,16 +235,25 @@
         buttonOK.innerText = 'OK';
         buttonOK.setAttribute('id', `ok-button-${currentTask.id}`);
         buttonOK.onclick = () => {
+            let oldvalue = document.getElementById(`task-edit-${currentTask.id}`)
             currentTask.description = document.getElementById(`task-edit-${currentTask.id}`).value;
 
-            // TODO ITEM 2: llamar a la API con el método PUT cuando la descripción de la tarea es
-            //  modificada (`currentTask`).
-            //  - Como parámetro `callbackSuccess` envía una función que llame al método `revertHTMLChangeOnEdit`
-            //    enviando la variable `currentTask`.
-            //  - Como parámetro `callbackError` envía una función que llame al método `showError` enviando un mensaje de
-            //    error
-            //  - La llamada debe ser asíncrona.
-            //  - No te olvides de envíar el parámetro para que se cree la tarea.
+            if (oldvalue.getAttribute('data-oldvalue') != currentTask.description) {
+
+
+                //let id = inputText.id.split('-')[2];           
+                //realizamos nuestra peticion PUT pasando el id del elemento
+                let auxx = {
+                    description: currentTask.description
+                }
+                Ajax.sendPutRequest(API_URL + '/' + id, auxx, MediaFormat.JSON, (valor) => loadLst(),
+                    (error) => showError(error, 'No fue posible actualizar la tarea.'), true);
+
+                // TODO ITEM 2: llamar a la API con el m�todo PUT cuando la descripci�n de la tarea es
+
+            } else {
+                revertHTMLChangeOnEdit(currentTask)
+            }
         };
 
         let buttonCancel = document.createElement('button');
