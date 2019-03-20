@@ -146,18 +146,29 @@
      * Change the task to the completed or incomplete list (according to the status)
      */
     const addOnChangeEvent = (task) => {
-        const checkBox = document.getElementById(`task-${task.id}`).querySelector('label > input');
-        checkBox.onchange = (e) => {
+         //obtiene el elemento del checkBox
+         const checkBox = document.getElementById(`task-${task.id}`).querySelector('label > input');
+         //el js esta atento a los cambios que se realiza al seleccionar o deseleccionar el checkbox
+         checkBox.onchange = (e) => {
+             //SS se crea el objeto para actualizar el estado
+             let aux = {
+                 status: TASK_STATUS.DONE
+             }
+ 
+             //obtenemos el id del objeto contenido en ese checkbox
+             let id = e.currentTarget.id.split('_')[1];
+ 
+             //SS realizamos nuestra peticion PUT pasando el id del elemento
+             Ajax.sendPutRequest(API_URL+'/'+id, aux, MediaFormat.JSON, (valor) => loadLst(), 
+             (error) => showError(error, 'No fue posible actualizar la tarea.'), true);
+ 
+             // TODO ITEM 3: leer el nuevo estado de la tarea (que solo puede ser TERMINADO(true) or PENDIENTE(false)) accediendo a la
+             //  propiedad `e.target.checked`. Con �ste nuevo dato, debes mostrar la tarea junto con las tareas de su
+             //  mismo estado (e.g. si la tarea estaba pendiente pero el usuario hace click en el checkbox, el estado de
+             //  la tarea debe cambiar a terminada y debe ahora mostrarse con las otras tareas terminadas).
 
-            // TODO ITEM 3: leer el nuevo estado de la tarea (que solo puede ser TERMINADO(true) or PENDIENTE(false)) accediendo a la
-            //  propiedad `e.target.checked`. Con éste nuevo dato, debes mostrar la tarea junto con las tareas de su
-            //  mismo estado (e.g. si la tarea estaba pendiente pero el usuario hace click en el checkbox, el estado de
-            //  la tarea debe cambiar a terminada y debe ahora mostrarse con las otras tareas terminadas).
-            // - Una forma de hacerlo es remover directamente el archivo con el id `task-${task.id}` del DOM HTML
-            // y luego llamar a la función `addTaskToList` que re-creara la tarea con el nuevo estado en el lugar correcto.
-            // - No te olvides de llamar al API (método PUT) para modificar el estado de la tarea en el servidor.
-        };
-    };
+         };
+     };
 
     /**
      * This method modifies the DOM HTML to add new items to the task list.
