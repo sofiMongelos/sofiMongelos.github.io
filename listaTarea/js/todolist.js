@@ -30,11 +30,33 @@
     document.onreadystatechange = () => {
 
         // TODO ITEM 0: Llamar al API con el método GET para recuperar la lista de tareas existentes.
-        //  - Como parámetro `callbackSuccess` envía la función `loadTasks`.
-        //  - Como parámetro `callbackError` envía una función que llame al método `showError` enviando un mensaje de
-        //    error
-        //  - La llamada debe ser asíncrona.
+        loadLst()
+        
+    };
 
+    const loadLst = () => {
+        //Obtenemos el elemento con clase listView y borramos su contenido para evitar que se duplique la lista al 
+        // volver a realizar la llamada para refrescar la lista
+        let lstListas = document.getElementsByClassName('listView');
+        if (lstListas) {
+            for (var i = 0; i < lstListas.length; i++) {
+                const element = lstListas[i];
+                element.innerHTML = "";
+            }
+        }
+
+        //el param para este caso solo utilizamos como relleno
+        var param = {}
+        //hacemos la peticion GET 
+        Ajax.sendGetRequest(API_URL, param, MediaFormat.JSON, (valor) => loadTasks(valor), (error) => showError(error, 'No se pudo obtener la informacion requerida.'), true);
+    };
+
+    const processInfo = () => {
+        //obtenemos la instancia del input y seteamos una cadena vacia
+        let limpiarnewTaskInput = document.getElementById("new-task");
+        limpiarnewTaskInput.value = "";
+        // llamamos a cargar lista para refrescar y actualizar los datos
+        loadLst();
     };
 
     /**
