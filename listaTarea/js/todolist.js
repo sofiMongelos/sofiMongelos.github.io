@@ -5,16 +5,6 @@
  * @since 04/03/19.
  * @version 1.0
  */
-
- /*$(document).ready(function(){
-    /**
-     * Con esta funcion sabemos cuando se realiza la carga del DOM (seria el html puro) 
-     * segun teoria una vez que el navegador carga todo el DOM (no implica banner, estilos y detalles)
-     * esta preparado para recibir nuevas instrucciones o cambios a realizar 
-    
-    console.log('Hola soy famoso')
-}); */
-
 (($) => {
     'use strict';
 
@@ -56,19 +46,19 @@
         // volver a realizar la llamada para refrescar la lista
         let lstListas = document.getElementsByClassName('listView');
         //let lstListas = $(".listView")
-        if(lstListas) {
-            for(var i = 0; i < lstListas.length; i++) {
+        if (lstListas) {
+            for (var i = 0; i < lstListas.length; i++) {
                 const element = lstListas[i];
                 element.innerHTML = "";
             }
         }
 
 
-       
+
         var param = {}
         //hacemos la peticion GET 
         //Ajax.sendGetRequest(API_URL, param, MediaFormat.JSON, (valor) => loadTasks(valor), (error) => showError(error, 'No se pudo obtener la informacion requerida.'), true);
-        $.get(API_URL, function(valor){
+        $.get(API_URL, function (valor) {
             loadTasks(valor);
         })
     };
@@ -90,7 +80,7 @@
         // TODO ITEM 6 recuperar el elemento HTML con la clase `error-bar` y modificar el HTML interno de
         // manera a mostrar el mensaje de error.
         // El mensaje de error debe desaparacer luego de 3 segundos.
-       
+
         //se recupera el elemento 
         var contentError = document.getElementsByClassName('error-bar');
 
@@ -100,12 +90,12 @@
         //muestro el modal
         modal.style.display = "block";
 
-        
+
         //cargo en el elemente html el mensaje que contiene text
         contentError[0].innerText = text
 
         //creo setTimeout para cronometrar los 3 segundos
-        setTimeout(function() {
+        setTimeout(function () {
             //borro el mensaje
             contentError[0].innerText = "";
             //oculto el modal
@@ -185,7 +175,7 @@
      */
     let addButtons = document.getElementsByClassName('add');
     for (let i in addButtons)
-        addButtons.item(Number(i)).onclick =  (e) => addTask(e);
+        addButtons.item(Number(i)).onclick = (e) => addTask(e);
 
     /**
      * We associate a function to manipulate the DOM once the checkbox value is changed.
@@ -206,25 +196,8 @@
             document.getElementById(`task-${id}`).remove()
 
             //realizamos nuestra peticion PUT pasando el id del elemento
-
-             $.ajax({
-            url: API_URL+'/'+id,
-            type: 'PUT',
-            async: true,
-            data: JSON.stringify(aux),
-            headers: {
-                'Accept':'application/json',
-                'Content-Type':'application/json'
-            },
-                success: function(result) {
-                    addTaskToList(result)
-                },
-                error: function(error){
-                    showError(error, 'No fue posible actualizar la tarea.')
-                }
-            })            
-            //Ajax.sendPutRequest(API_URL+'/'+id, aux, MediaFormat.JSON, (valor) => addTaskToList(JSON.parse(valor)), 
-            //(error) => showError(error, 'No fue posible actualizar la tarea.'), true);
+            Ajax.sendPutRequest(API_URL + '/' + id, aux, MediaFormat.JSON, (valor) => addTaskToList(JSON.parse(valor)),
+                (error) => showError(error, 'No fue posible actualizar la tarea.'), true);
 
             // TODO ITEM 3: leer el nuevo estado de la tarea (que solo puede ser TERMINADO(true) or PENDIENTE(false)) accediendo a la
             //  propiedad `e.target.checked`. Con éste nuevo dato, debes mostrar la tarea junto con las tareas de su
@@ -263,11 +236,11 @@
         newItem.appendChild(label);
         //si el estado es igual a pendiente cargo el boton editar
         if (task.status === TASK_STATUS.PENDING) {
-            newItem.appendChild(editButton);    
+            newItem.appendChild(editButton);
         }
         newItem.appendChild(deleteButton);
 
-        if (task.status  === TASK_STATUS.PENDING)
+        if (task.status === TASK_STATUS.PENDING)
             document.getElementById('incomplete-tasks').appendChild(newItem);
         else
             document.getElementById('completed-tasks').appendChild(newItem);
@@ -309,43 +282,25 @@
             let oldvalue = document.getElementById(`task-edit-${currentTask.id}`)
             currentTask.description = document.getElementById(`task-edit-${currentTask.id}`).value;
 
-            if(oldvalue.getAttribute('data-oldvalue') != currentTask.description) {
+            if (oldvalue.getAttribute('data-oldvalue') != currentTask.description) {
 
 
-            //let id = inputText.id.split('-')[2];           
-            //realizamos nuestra peticion PUT pasando el id del elemento
-            let auxx = {
-                description: currentTask.description
-            }
-
-             $.ajax({
-            url: API_URL+'/'+id,
-            type: 'PUT',
-            async: true,
-            data: JSON.stringify(auxx),
-            headers: {
-                'Accept':'application/json',
-                'Content-Type':'application/json'
-            },
-                success: function(result){
-                    console.log(result)
-                    revertHTMLChangeOnEdit(currentTask)
-                },
-                error: function(error){
-                    showError(error,'No fue posible actualizar la tarea.')
+                //let id = inputText.id.split('-')[2];           
+                //realizamos nuestra peticion PUT pasando el id del elemento
+                let auxx = {
+                    description: currentTask.description
                 }
-            })            
-            //Ajax.sendPutRequest(API_URL+'/'+id, auxx, MediaFormat.JSON, (valor) => revertHTMLChangeOnEdit(currentTask), 
-            //(error) => showError(error, 'No fue posible actualizar la tarea.'), true);
+                Ajax.sendPutRequest(API_URL + '/' + id, auxx, MediaFormat.JSON, (valor) => revertHTMLChangeOnEdit(currentTask),
+                    (error) => showError(error, 'No fue posible actualizar la tarea.'), true);
 
-            // TODO ITEM 2: llamar a la API con el método PUT cuando la descripción de la tarea es
-            //  modificada (`currentTask`).
-            //  - Como parámetro `callbackSuccess` envía una función que llame al método `revertHTMLChangeOnEdit`
-            //    enviando la variable `currentTask`.
-            //  - Como parámetro `callbackError` envía una función que llame al método `showError` enviando un mensaje de
-            //    error
-            //  - La llamada debe ser asíncrona.
-            //  - No te olvides de envíar el parámetro para que se cree la tarea.
+                // TODO ITEM 2: llamar a la API con el método PUT cuando la descripción de la tarea es
+                //  modificada (`currentTask`).
+                //  - Como parámetro `callbackSuccess` envía una función que llame al método `revertHTMLChangeOnEdit`
+                //    enviando la variable `currentTask`.
+                //  - Como parámetro `callbackError` envía una función que llame al método `showError` enviando un mensaje de
+                //    error
+                //  - La llamada debe ser asíncrona.
+                //  - No te olvides de envíar el parámetro para que se cree la tarea.
 
 
             } else {
@@ -398,10 +353,9 @@
      */
     const removeTaskFromList = (id) => {
         // TODO ITEM 4: remover del DOM HTML el elemento con id `task-${id}`
-       //let a = document.getElementById(`task-${id}`)
-       //a.remove()
-       let a = "#task-"+id;
-       $(a).remove();
+        let a = document.getElementById(`task-${id}`)
+        a.remove()
+
     };
 
     /**
@@ -411,26 +365,8 @@
     const removeTask = (e) => {
         const id = e.target.dataset.id;
         let param = {}
-        
-         $.ajax({
-            url: API_URL+'/'+id,
-            type: 'DELETE',
-            async: true,
-            data: JSON.stringify(param),
-            headers: {
-                'Accept':'application/json',
-                'Content-Type':'application/json'
-            },
-                success: function(result){
-                    console.log(result);
-                    removeTaskFromList(id);
-                },
-                error: function(error){
-                    showError(error,'No fue posible eliminar la tarea.')
-                }
-            }) 
-        // Ajax.sendDeleteRequest(API_URL+'/'+id, param, MediaFormat.JSON, (valor) => removeTaskFromList(id), 
-          //  (error) => showError(error, 'No fue posible eliminar la tarea.'), true);
+        Ajax.sendDeleteRequest(API_URL + '/' + id, param, MediaFormat.JSON, (valor) => removeTaskFromList(id),
+            (error) => showError(error, 'No fue posible eliminar la tarea.'), true);
 
         // TODO ITEM 5: enviar una petición DELETE al API con el {id} de la tarea.
         //   - Como parámetro `callbackSuccess` enviar una función que llamé al método `removeTaskFromList`
