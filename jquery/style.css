@@ -1,0 +1,103 @@
+
+body { 
+    padding-left: 36em;
+    font-family: sans-serif;
+    background-color: #D6EAF8;
+    color: #444; 
+}
+
+.container{
+    margin-top: 46px;   
+    width: 350px;
+    height: 450px;
+}
+
+h1 { 
+    font-size: 1.7em
+}
+
+h2 { 
+    font-size: 1.2em
+}
+
+h1, h2 {
+    color: #2874A6
+}
+
+ul{
+    list-style-type: none;
+    margin: 0;
+}
+
+hr{
+    width: 191px;
+    margin-left: initial;
+}
+
+.add{
+    background-color: #008CBA;
+    border-color: #0267AE;
+    color: white;
+    margin-left: 2px;
+    cursor: pointer;
+    border-radius: 84px;
+    padding: 1px 8px 1px 6px;
+}
+
+.edit{
+    background-color: #04ACF8;
+    border-color: #0267AE;
+    color: white;
+    margin-left: 2px;
+    border-radius: 84px;
+    padding: 1px 8px 1px 6px;
+    cursor: pointer;
+}
+
+.delete{
+    background-color: #F7050C;
+    border-color: #F95358;
+    color: white;
+    margin-left: 2px;
+    border-radius: 84px;
+    padding: 1px 8px 1px 6px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: white;
+    color: black;
+    border: none;
+  }
+/* con esto agregamos el tachado*/
+#completed-tasks li label{
+    text-decoration: line-through;
+}
+/*TODO PARA EL MODAL*/
+.modal {
+    display: none; 
+    position: fixed; 
+    z-index: 1; 
+    padding-top: 100px; 
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%; 
+    overflow: auto;
+    background-color: rgb(0,0,0); 
+    background-color: rgba(0,0,0,0.4); 
+  }
+  
+  /* Modal Content */
+  .modal-content {
+    background-color: #D6EAF8;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 40%;
+    text-align: center;
+    color: #444; 
+    font-family: sans-serif;
+    border-radius: 10px;
+  }
+  

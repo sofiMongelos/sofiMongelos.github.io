@@ -12,6 +12,7 @@
     * segun teoria una vez que el navegador carga todo el DOM (no implica banner, estilos y detalles)
     * esta preparado para recibir nuevas instrucciones o cambios a realizar 
    
+   console.log('Hola soy famoso')
 }); */
 
 (($) => {

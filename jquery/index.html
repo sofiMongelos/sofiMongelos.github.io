@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>TODO List App</title>
+    <link rel="stylesheet" type="text/css" href="style.css" media="all" />
+</head>
+
+<body>
+    <div class="container">
+        <h1>Lista de Tareas</h1>
+        <p>
+            <label for="new-task">Nueva Tarea</label>
+            <input id="new-task" type="text"><button class="add">Agregar</button>
+        </p>
+
+        <div id="myModal" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <p class="error-bar"></p>
+            </div>
+        </div>
+
+        <h2>Lista de Tareas Pendientes</h2>
+        <ul id="incomplete-tasks">
+            <li>
+                <label>
+                    <input type="checkbox" />
+                    Tarea 1
+                </label>
+                <button class="edit">Editar</button>
+                <button class="delete">Borrar</button>
+            </li>
+            <li>
+                <label>
+                    <input type="checkbox" />
+                    Tarea 2
+                </label>
+                <button class="edit">Editar</button>
+                <button class="delete">Borrar</button></li>
+
+        </ul>
+
+        <h2>Lista de Tareas Completadas</h2>
+        <ul id="completed-tasks">
+            <li>
+                <hr>
+                <label>
+                    <input type="checkbox" checked>
+                    Tarea 0
+                </label>
+                <button class="edit">Editar</button>
+                <button class="delete">Borrar</button>
+            </li>
+        </ul>
+    </div>
+
+</body>
+<script src="http://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous">
+    </script>
+<script type="text/javascript" src="js/todolist.js" async></script>
+
+</html>
