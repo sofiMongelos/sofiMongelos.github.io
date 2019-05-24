@@ -5,6 +5,15 @@
  * @since 04/03/19.
  * @version 1.0
  */
+
+/*$(document).ready(function(){
+   /**
+    * Con esta funcion sabemos cuando se realiza la carga del DOM (seria el html puro) 
+    * segun teoria una vez que el navegador carga todo el DOM (no implica banner, estilos y detalles)
+    * esta preparado para recibir nuevas instrucciones o cambios a realizar 
+   
+}); */
+
 (($) => {
     'use strict';
 
@@ -111,7 +120,7 @@
      */
     const loadTasks = (array) => {
 
-        let tasks = JSON.parse(array);
+        let tasks = array;
         for (let i in tasks) {
             if (tasks.hasOwnProperty(i)) {
                 addTaskToList(tasks[i]);
@@ -140,9 +149,27 @@
 
         //se crea un objeto que contiente {id: null, status: PENDIENTE, descripcion: content}
         let task = new Task(content);
-
+        //let task = content;
         //realizo la peticion POST para crear una nueva tarea
-        Ajax.sendPostRequest(API_URL, task, MediaFormat.JSON, (valor) => processInfo(), (error) => showError(error, 'Error al intentar agregar la tarea'), true)
+        //  $.post(API_URL,JSON.stringify(task), function(data, status){
+        //    processInfo();
+        //});
+        $.ajax({
+            url: API_URL,
+            type: 'POST',
+            async: true,
+            data: JSON.stringify(task),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            success: processInfo,
+            error: function (error) {
+                showError(error, 'Error al intentar agregar la tarea');
+            }
+        })
+
+        //Ajax.sendPostRequest(API_URL, task, MediaFormat.JSON, (valor) => processInfo(), (error) => showError(error, 'Error al intentar agregar la tarea'), true)
         // TODO ITEM 1: Llamar al API con el método POST para crear una nueva tarea.
         //  - Como parámetro `callbackSuccess` envía una función que llame al método `addTaskToList` enviando la
         //    variable `task` y limpia el valor del input#new-task.
@@ -178,8 +205,25 @@
             document.getElementById(`task-${id}`).remove()
 
             //realizamos nuestra peticion PUT pasando el id del elemento
-            Ajax.sendPutRequest(API_URL + '/' + id, aux, MediaFormat.JSON, (valor) => addTaskToList(JSON.parse(valor)),
-                (error) => showError(error, 'No fue posible actualizar la tarea.'), true);
+
+            $.ajax({
+                url: API_URL + '/' + id,
+                type: 'PUT',
+                async: true,
+                data: JSON.stringify(aux),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                success: function (result) {
+                    addTaskToList(result)
+                },
+                error: function (error) {
+                    showError(error, 'No fue posible actualizar la tarea.')
+                }
+            })
+            //Ajax.sendPutRequest(API_URL+'/'+id, aux, MediaFormat.JSON, (valor) => addTaskToList(JSON.parse(valor)), 
+            //(error) => showError(error, 'No fue posible actualizar la tarea.'), true);
 
             // TODO ITEM 3: leer el nuevo estado de la tarea (que solo puede ser TERMINADO(true) or PENDIENTE(false)) accediendo a la
             //  propiedad `e.target.checked`. Con éste nuevo dato, debes mostrar la tarea junto con las tareas de su
@@ -272,8 +316,26 @@
                 let auxx = {
                     description: currentTask.description
                 }
-                Ajax.sendPutRequest(API_URL + '/' + id, auxx, MediaFormat.JSON, (valor) => revertHTMLChangeOnEdit(currentTask),
-                    (error) => showError(error, 'No fue posible actualizar la tarea.'), true);
+
+                $.ajax({
+                    url: API_URL + '/' + id,
+                    type: 'PUT',
+                    async: true,
+                    data: JSON.stringify(auxx),
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    success: function (result) {
+                        console.log(result)
+                        revertHTMLChangeOnEdit(currentTask)
+                    },
+                    error: function (error) {
+                        showError(error, 'No fue posible actualizar la tarea.')
+                    }
+                })
+                //Ajax.sendPutRequest(API_URL+'/'+id, auxx, MediaFormat.JSON, (valor) => revertHTMLChangeOnEdit(currentTask), 
+                //(error) => showError(error, 'No fue posible actualizar la tarea.'), true);
 
                 // TODO ITEM 2: llamar a la API con el método PUT cuando la descripción de la tarea es
                 //  modificada (`currentTask`).
@@ -335,9 +397,10 @@
      */
     const removeTaskFromList = (id) => {
         // TODO ITEM 4: remover del DOM HTML el elemento con id `task-${id}`
-        let a = document.getElementById(`task-${id}`)
-        a.remove()
-
+        //let a = document.getElementById(`task-${id}`)
+        //a.remove()
+        let a = "#task-" + id;
+        $(a).remove();
     };
 
     /**
@@ -347,8 +410,26 @@
     const removeTask = (e) => {
         const id = e.target.dataset.id;
         let param = {}
-        Ajax.sendDeleteRequest(API_URL + '/' + id, param, MediaFormat.JSON, (valor) => removeTaskFromList(id),
-            (error) => showError(error, 'No fue posible eliminar la tarea.'), true);
+
+        $.ajax({
+            url: API_URL + '/' + id,
+            type: 'DELETE',
+            async: true,
+            data: JSON.stringify(param),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            success: function (result) {
+                console.log(result);
+                removeTaskFromList(id);
+            },
+            error: function (error) {
+                showError(error, 'No fue posible eliminar la tarea.')
+            }
+        })
+        // Ajax.sendDeleteRequest(API_URL+'/'+id, param, MediaFormat.JSON, (valor) => removeTaskFromList(id), 
+        //  (error) => showError(error, 'No fue posible eliminar la tarea.'), true);
 
         // TODO ITEM 5: enviar una petición DELETE al API con el {id} de la tarea.
         //   - Como parámetro `callbackSuccess` enviar una función que llamé al método `removeTaskFromList`
